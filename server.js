@@ -38,7 +38,16 @@ app.get("/inventory", (req, res) => {
 });
 
 app.get("/sign-up", (req, res) => {
-  res.render("sign-up", {title: "Sign-up page"});
+  res.render("sign-up", {
+    title: "Sign-up page",
+    values: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: ""
+    },
+    messages: {}  
+  });
 });
 
 app.get("/log-in", (req, res) => {
@@ -58,24 +67,69 @@ app.post("/log-in", (req, res) => {
 
   const { email, password } = req.body;
   let messages = {};
-  let hasErrors = false; // Single flag to track validation errors
+  let inValid = false;  
 
   if (!email || email.trim().length === 0) {
     messages.email = "Email is required"; 
-    hasErrors = true;
+    inValid = true;
   } 
   if (!password || password.trim().length === 0) {
     messages.password = "Password is required";
-    hasErrors = true;
+    inValid = true;
   } 
 
-  if (hasErrors) {  
+  if (inValid) {  
     res.render("log-in", { title: "Log-in page", values: req.body, messages });
   } else {
     res.redirect("/");
   }
 }); 
 
+app.post("/sign-up", (req, res) => {
+  console.log(req.body);
+
+  const { firstName, lastName, email, password } = req.body;
+  let messages = {};
+  let inValid = false;
+
+  if (!firstName || firstName.trim().length === 0) {
+    messages.firstName = "First Name is required";
+    inValid = true;
+  } else if (!/^[a-zA-Z]{2,}$/.test(firstName)) {
+    messages.firstName = "First Name must contain only letters and be at least 2 characters long";
+    inValid = true;
+  }
+
+  if (!lastName || lastName.trim().length === 0) {
+    messages.lastName = "Last Name is required";
+    inValid = true;
+  } else if (!/^[a-zA-Z]{2,}$/.test(lastName)) {
+    messages.lastName = "Last Name must contain only letters and be at least 2 characters long";
+    inValid = true;
+  }
+
+  if (!email || email.trim().length === 0) {
+    messages.email = "Email is required"; 
+    inValid = true;
+  } else if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) {
+    messages.email = "Invalid email format";
+    inValid = true;
+  }
+
+  if (!password || password.trim().length === 0) {
+    messages.password = "Password is required";
+    inValid = true;
+  } else if (!/^.{6,}$/.test(password)) {
+    messages.password = "Password must be at least 6 characters long";
+    inValid = true;
+  }
+
+  if (inValid) {  
+    res.render("sign-up", { title: "Sign-up page", values: req.body, messages });
+  } else {
+    res.redirect("/");
+  }
+});
 
 // This use() will not allow requests to go beyond it
 // so we place it at the end of the file, after the other routes.

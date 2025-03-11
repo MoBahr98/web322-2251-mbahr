@@ -1,7 +1,6 @@
 <div class="container">
   <div class="login-container">
     <h2>Welcome Back</h2>
-    <div class="mp-3">
     <form method="POST" action="/log-in">
       <label for="email" class="form-label">Email</label>
       <input
@@ -14,8 +13,6 @@
       <% if (messages.email) { %>
       <p class="text-danger"><%= messages.email %></p>
       <% } %>
-    </div>
-    <div class="mp-3">
       <label for="password" class="form-label">Password</label>
       <input
         type="password"
@@ -27,7 +24,6 @@
       <% if (messages.password) { %>
       <p class="text-danger"><%= messages.password %></p>
       <% } %>
-    </div>
       <button type="submit" class="btn">Login</button>
     </form>
   </div>
