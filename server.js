@@ -19,6 +19,9 @@ const productUtil = require("./modules/product-util");
 
 const expressLayouts = require("express-ejs-layouts");
 
+const dotenv = require("dotenv");
+dotenv.config({path: "./config/.env"});
+
 app.set("view engine", "ejs");
 app.set("layout", "layouts/main");
 app.use(expressLayouts);
@@ -30,11 +33,17 @@ app.use(express.urlencoded({ extended: false }));
 // e.g. app.get() { ... }
 
 app.get("/", (req, res) => {
-  res.render("home", { title: "Home - Geek Zone", products: productUtil.getFeaturedProducts()});
+  res.render("home", {
+    title: "Home - Geek Zone",
+    products: productUtil.getFeaturedProducts(),
+  });
 });
 
 app.get("/inventory", (req, res) => {
-  res.render("inventory", { title: "Inventory", products: productUtil.getProductsByCategory(productUtil.getAllProducts())});
+  res.render("inventory", {
+    title: "Inventory",
+    products: productUtil.getProductsByCategory(productUtil.getAllProducts()),
+  });
 });
 
 app.get("/sign-up", (req, res) => {
@@ -44,46 +53,45 @@ app.get("/sign-up", (req, res) => {
       firstName: "",
       lastName: "",
       email: "",
-      password: ""
+      password: "",
     },
-    messages: {}  
+    messages: {},
   });
 });
 
 app.get("/log-in", (req, res) => {
   res.render("log-in", {
-      title: "Log-in page",
-      values: {
-          email: "",
-          password: ""
-      },
-      messages: {}
+    title: "Log-in page",
+    values: {
+      email: "",
+      password: "",
+    },
+    messages: {},
   });
 });
-
 
 app.post("/log-in", (req, res) => {
   console.log(req.body);
 
   const { email, password } = req.body;
   let messages = {};
-  let inValid = false;  
+  let inValid = false;
 
   if (!email || email.trim().length === 0) {
-    messages.email = "Email is required"; 
+    messages.email = "Email is required";
     inValid = true;
-  } 
+  }
   if (!password || password.trim().length === 0) {
     messages.password = "Password is required";
     inValid = true;
-  } 
+  }
 
-  if (inValid) {  
+  if (inValid) {
     res.render("log-in", { title: "Log-in page", values: req.body, messages });
   } else {
     res.redirect("/");
   }
-}); 
+});
 
 app.post("/sign-up", (req, res) => {
   console.log(req.body);
@@ -96,7 +104,8 @@ app.post("/sign-up", (req, res) => {
     messages.firstName = "First Name is required";
     inValid = true;
   } else if (!/^[a-zA-Z]{2,}$/.test(firstName)) {
-    messages.firstName = "First Name must contain only letters and be at least 2 characters long";
+    messages.firstName =
+      "First Name must contain only letters and be at least 2 characters long";
     inValid = true;
   }
 
@@ -104,12 +113,13 @@ app.post("/sign-up", (req, res) => {
     messages.lastName = "Last Name is required";
     inValid = true;
   } else if (!/^[a-zA-Z]{2,}$/.test(lastName)) {
-    messages.lastName = "Last Name must contain only letters and be at least 2 characters long";
+    messages.lastName =
+      "Last Name must contain only letters and be at least 2 characters long";
     inValid = true;
   }
 
   if (!email || email.trim().length === 0) {
-    messages.email = "Email is required"; 
+    messages.email = "Email is required";
     inValid = true;
   } else if (!/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(email)) {
     messages.email = "Invalid email format";
@@ -124,15 +134,60 @@ app.post("/sign-up", (req, res) => {
     inValid = true;
   }
 
-  if (inValid) {  
-    res.render("sign-up", { title: "Sign-up page", values: req.body, messages });
+  if (inValid) {
+    res.render("sign-up", {
+      title: "Sign-up page",
+      values: req.body,
+      messages,
+    });
   } else {
-    res.redirect(`/welcome?name=${encodeURIComponent(req.body.firstName)}`);
+    const FormData = require("form-data"); // form-data v4.0.1
+    const Mailgun = require("mailgun.js"); // mailgun.js v11.1.0
+
+    async function sendSimpleMessage() {
+      const mailgun = new Mailgun(FormData);
+      const mg = mailgun.client({
+        username: "api",
+        key: process.env.API_KEY
+        // When you have an EU-domain, you must specify the endpoint:
+        // url: "https://api.eu.mailgun.net/v3"
+      });
+      try {
+        const data = await mg.messages.create(
+          "sandboxb00d8773929b4431986a100a17d6fe13.mailgun.org",
+          {
+            from: "Mailgun Sandbox <postmaster@sandboxb00d8773929b4431986a100a17d6fe13.mailgun.org>",
+            to: [`${firstName} <${email}>`],
+            subject: `Welcome, ${userName}!`,
+            html: `
+            <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto;">
+              <h2 style="color: #333;">Welcome to The Geek Zone, ${userName}!</h2>
+              <p style="font-size: 16px; color: #555;">We are excited to have you join our community!</p>
+              <p style="font-size: 16px; color: #555;">Explore our collection of anime, gaming, and nerdy merchandise.</p>
+
+              <p style="font-size: 14px; color: #888;">If you have any questions, feel free to contact us!</p>
+              <p style="font-size: 14px; color: #888;">Best,<br>The Geek Zone Team</p>
+            </div>
+          `,
+          }
+        );
+
+        console.log(data); // logs response data
+        res.redirect(`/welcome?name=${encodeURIComponent(req.body.firstName)}`);
+      } catch (error) {
+        console.log(error); //logs any error
+        res.render("sign-up", {
+          title: "Sign-up page",
+          values: req.body,
+          messages,
+        });
+      }
+    }
   }
 });
 
 app.get("/welcome", (req, res) => {
-  const userName = req.query.name || "Shopper"; 
+  const userName = req.query.name || "Shopper";
   res.render("welcome", { title: "Welcome Page", userName });
 });
 

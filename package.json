@@ -30,8 +30,10 @@
   "author": "Mohamed Bahr",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
-    "express-ejs-layouts": "^2.5.1"
+    "express-ejs-layouts": "^2.5.1",
+    "mailgun.js": "^12.0.1"
   }
 }
