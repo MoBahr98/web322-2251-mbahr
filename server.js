@@ -19,13 +19,14 @@ const productUtil = require("./modules/product-util");
 
 const expressLayouts = require("express-ejs-layouts");
 
+
 const dotenv = require("dotenv");
 dotenv.config({path: "./config/.env"});
 
 app.set("view engine", "ejs");
 app.set("layout", "layouts/main");
 app.use(expressLayouts);
-app.set('views', __dirname + '/views');
+app.set('views', __dirname + '/views'); //for vercel
 
 // Add middleware to parse the POST data of the body
 app.use(express.urlencoded({ extended: false }));
