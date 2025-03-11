@@ -5,9 +5,9 @@ Policy. No part of this assignment has been copied manually or electronically fr
 any other source (including web sites) or distributed to other students.
 
 ## Student Information
-Student Name  : 
-Student ID    : 
-Student Email : you@myseneca.ca
+Student Name  : Mohamed Bahr
+Student ID    : 148056237
+Student Email : mbahr@myseneca.ca
 Course/Section: WEB322/NFF
 
 ## Project URLs
