@@ -14,7 +14,7 @@
 const path = require("path");
 const express = require("express");
 const app = express();
-app.use(express.static(path.join(__dirname, "assets")));
+app.use(express.static(path.join(__dirname, "/assets")));
 const productUtil = require("./modules/product-util");
 
 const expressLayouts = require("express-ejs-layouts");
@@ -25,6 +25,7 @@ dotenv.config({path: "./config/.env"});
 app.set("view engine", "ejs");
 app.set("layout", "layouts/main");
 app.use(expressLayouts);
+app.set('views', __dirname + '/views');
 
 // Add middleware to parse the POST data of the body
 app.use(express.urlencoded({ extended: false }));
