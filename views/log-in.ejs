@@ -1,19 +1,33 @@
 <div class="container">
   <div class="login-container">
     <h2>Welcome Back</h2>
-
-    <form>
+    <div class="mp-3">
+    <form method="POST" action="/log-in">
       <label for="email" class="form-label">Email</label>
-      <input type="text" id="email" name="email" class="form-control" />
-
+      <input
+        type="text"
+        id="email"
+        name="email"
+        class="form-control"
+        value="<%= values.email %>"
+      />
+      <% if (messages.email) { %>
+      <p class="text-danger"><%= messages.email %></p>
+      <% } %>
+    </div>
+    <div class="mp-3">
       <label for="password" class="form-label">Password</label>
       <input
         type="password"
         id="password"
         name="password"
         class="form-control"
+        value="<%= values.password %>"
       />
-
+      <% if (messages.password) { %>
+      <p class="text-danger"><%= messages.password %></p>
+      <% } %>
+    </div>
       <button type="submit" class="btn">Login</button>
     </form>
   </div>

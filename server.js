@@ -23,6 +23,9 @@ app.set("view engine", "ejs");
 app.set("layout", "layouts/main");
 app.use(expressLayouts);
 
+// Add middleware to parse the POST data of the body
+app.use(express.urlencoded({ extended: false }));
+
 // Add your routes here
 // e.g. app.get() { ... }
 
@@ -39,8 +42,40 @@ app.get("/sign-up", (req, res) => {
 });
 
 app.get("/log-in", (req, res) => {
-    res.render("log-in", {title: "Log-in page"});
+  res.render("log-in", {
+      title: "Log-in page",
+      values: {
+          email: "",
+          password: ""
+      },
+      messages: {}
+  });
 });
+
+
+app.post("/log-in", (req, res) => {
+  console.log(req.body);
+
+  const { email, password } = req.body;
+  let messages = {};
+  let hasErrors = false; // Single flag to track validation errors
+
+  if (!email || email.trim().length === 0) {
+    messages.email = "Email is required"; 
+    hasErrors = true;
+  } 
+  if (!password || password.trim().length === 0) {
+    messages.password = "Password is required";
+    hasErrors = true;
+  } 
+
+  if (hasErrors) {  
+    res.render("log-in", { title: "Log-in page", values: req.body, messages });
+  } else {
+    res.redirect("/");
+  }
+}); 
+
 
 // This use() will not allow requests to go beyond it
 // so we place it at the end of the file, after the other routes.
