@@ -154,7 +154,7 @@ footer {
 }
 
 .registration-container,
-.login-container {
+.login-container, .welcome-container {
   background: rgba(0, 0, 0, 0.717);
   text-align: center;
   margin: 50px auto;

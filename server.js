@@ -127,8 +127,13 @@ app.post("/sign-up", (req, res) => {
   if (inValid) {  
     res.render("sign-up", { title: "Sign-up page", values: req.body, messages });
   } else {
-    res.redirect("/");
+    res.redirect(`/welcome?name=${encodeURIComponent(req.body.firstName)}`);
   }
+});
+
+app.get("/welcome", (req, res) => {
+  const userName = req.query.name || "Shopper"; 
+  res.render("welcome", { title: "Welcome Page", userName });
 });
 
 // This use() will not allow requests to go beyond it
