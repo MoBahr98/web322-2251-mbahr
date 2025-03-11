@@ -155,10 +155,8 @@ app.post("/sign-up", (req, res) => {
         // url: "https://api.eu.mailgun.net/v3"
       });
       try {
-        const data = await mg.messages.create(
-          "sandboxb00d8773929b4431986a100a17d6fe13.mailgun.org",
-          {
-            from: "Mailgun Sandbox <postmaster@sandboxb00d8773929b4431986a100a17d6fe13.mailgun.org>",
+        const data = await mg.messages.create("sandboxfc373bb472894f42b5dccbc57a8c6a24.mailgun.org", {
+          from: "Mailgun Sandbox <postmaster@sandboxfc373bb472894f42b5dccbc57a8c6a24.mailgun.org>",
             to: [`${firstName} <${email}>`],
             subject: `Welcome, ${firstName}!`,
             html: `
@@ -167,8 +165,8 @@ app.post("/sign-up", (req, res) => {
               <p style="font-size: 16px; color: #555;">We are excited to have you join our community!</p>
               <p style="font-size: 16px; color: #555;">Explore our collection of anime, gaming, and nerdy merchandise.</p>
 
-              <p style="font-size: 14px; color: #888;">If you have any questions, feel free to contact us!</p>
-              <p style="font-size: 14px; color: #888;">Best,<br>The Geek Zone Team</p>
+              <p style="font-size: 16px; color: #555;">If you have any questions, feel free to contact us!</p>
+              <p style="font-size: 16px; color: #555;">Best,<br>The Geek Zone Team</p>
             </div>
           `,
           }
