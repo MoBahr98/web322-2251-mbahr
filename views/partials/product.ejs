@@ -1,0 +1,14 @@
+<div class="card product-card h-100">
+  <img src="/images/<%= product.imageUrl %>" alt="<%= product.title %>" />
+  <h3 class="card-title"><%= product.title %></h3>
+  <div class="card-body">
+    <p class="price">
+      <% if (product.salePrice < product.price) { %>
+      <span class="original-price">$<%= product.price %></span>
+      <span class="sale-price">$<%= product.salePrice %></span>
+      <% } else { %> $<%= product.price %> <% } %>
+    </p>
+
+    <p class="card-text"><%= product.description %></p>
+  </div>
+</div>

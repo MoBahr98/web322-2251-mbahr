@@ -1,0 +1,37 @@
+{
+  "name": "a1",
+  "version": "1.0.0",
+  "description": "WEB322 – ASSIGNMENT #1 – WINTER 2025 ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "wayfair-like",
+    "shopping",
+    "e-commerce",
+    "Geeky",
+    "Nerdy",
+    "Tech",
+    "retro",
+    "vintage",
+    "video-games",
+    "comics",
+    "collectibles",
+    "toys",
+    "mershandise",
+    "action figures",
+    "Manga",
+    "Anime",
+    "Sci-Fi",
+    "otaku"
+  ],
+  "author": "Mohamed Bahr",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-ejs-layouts": "^2.5.1"
+  }
+}

@@ -1,0 +1,98 @@
+<div class="hero d-flex align-items-center text-center">
+  <div class="container-fluid">
+    <h1 class="display-4 fw-bold text-white">Welcome to the GEEK ZONE</h1>
+    <p class="lead text-white">
+      Your one-stop shop for everything geeky, vintage, and awesome!
+    </p>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <div class="row g-4 justify-content-center">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+      <div class="card custom-card h-100">
+        <a href="/inventory#comics-&-manga">
+          <img
+            src="/images/senad-palic-HkpXmncGReQ-unsplash.jpg"
+            alt="Comics & Manga"
+            class="card-img-top"
+          />
+        </a>
+        <div class="card-body">
+          <h3 class="card-title">Comics & Manga</h3>
+          <p class="card-text">
+            Explore a vast collection of superhero classics and popular manga!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+      <div class="card custom-card h-100">
+        <a href="/inventory#retro-games-&-consoles">
+          <img
+            src="/images/nik-b-bnM85Z35o-unsplash.jpg"
+            alt="Retro Games & Consoles"
+            class="card-img-top"
+          />
+        </a>
+        <div class="card-body">
+          <h3 class="card-title">Retro Games & Consoles</h3>
+          <p class="card-text">
+            Relive gaming history with retro consoles and classic titles.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+      <div class="card custom-card h-100">
+        <a href="/inventory#cosplay-&-costumes">
+          <img
+            src="/images/hector-reyes-PXjQaGxi4JA-unsplash.jpg"
+            alt="Cosplay & Accessories"
+            class="card-img-top"
+          />
+        </a>
+        <div class="card-body">
+          <h3 class="card-title">Cosplay & Costumes</h3>
+          <p class="card-text">
+            Bring your favorite characters to life with our cosplay and costume
+            collection.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+      <div class="card custom-card h-100">
+        <a href="/inventory#merch-&-collectibles">
+          <img
+            src="/images/patryk-norman-w5soLz2X0Hg-unsplash.jpg"
+            alt="Merch & Collectibles"
+            class="card-img-top"
+          />
+        </a>
+        <div class="card-body">
+          <h3 class="card-title">Merch & Collectibles</h3>
+          <p class="card-text">
+            Find unique memorabilia for your favorite series and fandoms.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="featured-inventory">
+  <h2>Featured Products</h2>
+  <div class="container mt-4">
+    <div class="row g-4 justify-content-center">
+      <% products.forEach(product => { %>
+      <div class="col-sm-12 col-md-6 col-lg-6 col-xl-4">
+        <%- include('partials/product', { product }) %>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+</div>
