@@ -148,7 +148,7 @@ app.post("/sign-up", (req, res) => {
       const mailgun = new Mailgun(FormData);
       const mg = mailgun.client({
         username: "api",
-        key: process.env.API_KEY
+        key: process.env.API_KEY,
         // When you have an EU-domain, you must specify the endpoint:
         // url: "https://api.eu.mailgun.net/v3"
       });
@@ -158,10 +158,10 @@ app.post("/sign-up", (req, res) => {
           {
             from: "Mailgun Sandbox <postmaster@sandboxb00d8773929b4431986a100a17d6fe13.mailgun.org>",
             to: [`${firstName} <${email}>`],
-            subject: `Welcome, ${userName}!`,
+            subject: `Welcome, ${firstName}!`,
             html: `
             <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto;">
-              <h2 style="color: #333;">Welcome to The Geek Zone, ${userName}!</h2>
+              <h2 style="color: #333;">Welcome to The Geek Zone, ${firstName}!</h2>
               <p style="font-size: 16px; color: #555;">We are excited to have you join our community!</p>
               <p style="font-size: 16px; color: #555;">Explore our collection of anime, gaming, and nerdy merchandise.</p>
 
@@ -183,6 +183,7 @@ app.post("/sign-up", (req, res) => {
         });
       }
     }
+    sendSimpleMessage();
   }
 });
 
