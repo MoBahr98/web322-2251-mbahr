@@ -348,7 +348,7 @@ router.post("/cart/remove/:id", (req, res) => {
 
   for (let i = 0; i < cart.length; i++) {
     if (cart[i].product._id.toString() === productId) {
-      cart.splice(i, 1); // Remove the item from the cart
+      cart.splice(i, 1); 
       break;
     }
   }
