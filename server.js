@@ -13,42 +13,68 @@
 
 const path = require("path");
 const express = require("express");
+const mongoose = require("mongoose");
+const session = require("express-session");
 const app = express();
 app.use(express.static(path.join(__dirname, "/assets")));
-const productUtil = require("./modules/product-util");
+
+const fileUpload = require("express-fileupload");
+app.use(fileUpload());
 
 const expressLayouts = require("express-ejs-layouts");
 
-
 const dotenv = require("dotenv");
-dotenv.config({path: "./config/.env"});
+dotenv.config({ path: "./config/.env" });
 
 app.set("view engine", "ejs");
 app.set("layout", "layouts/main");
 app.use(expressLayouts);
-app.set('views', __dirname + '/views'); //for vercel
+app.set("views", __dirname + "/views"); //for vercel
 
 // Add middleware to parse the POST data of the body
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+app.use((req, res, next) => {
+  res.locals.user = req.session.user;
+  res.locals.role = req.session.role;
+  next();
+});
+
+// Set up controllers
+const generalController = require("./controllers/generalController");
+const inventoryController = require("./controllers/inventoryController");
+const loadDataController = require("./controllers/loadDataController");
+
+app.use("/", generalController);
+app.use("/inventory", inventoryController);
+app.use("/load-data", loadDataController);
 
 // Add your routes here
 // e.g. app.get() { ... }
 
-app.get("/", (req, res) => {
+/*app.get("/", (req, res) => {
   res.render("home", {
     title: "Home - Geek Zone",
     products: productUtil.getFeaturedProducts(),
   });
-});
+});*/
 
-app.get("/inventory", (req, res) => {
+/*app.get("/inventory", (req, res) => {
   res.render("inventory", {
     title: "Inventory",
     products: productUtil.getProductsByCategory(productUtil.getAllProducts()),
   });
-});
+});*/
 
-app.get("/sign-up", (req, res) => {
+/*app.get("/sign-up", (req, res) => {
   res.render("sign-up", {
     title: "Sign-up page",
     values: {
@@ -185,12 +211,23 @@ app.post("/sign-up", (req, res) => {
     }
     sendSimpleMessage();
   }
-});
+});*/
 
-app.get("/welcome", (req, res) => {
+/*app.get("/welcome", (req, res) => {
   const userName = req.query.name || "Shopper";
   res.render("welcome", { title: "Welcome Page", userName });
-});
+});*/
+
+// Connect to MongoDB and start the server
+mongoose
+  .connect(process.env.MONGODB_CONNECTION_STRING)
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(HTTP_PORT, onHttpStart);
+  })
+  .catch((err) => {
+    console.log("Can't connect to the MongoDB: " + err);
+  });
 
 // This use() will not allow requests to go beyond it
 // so we place it at the end of the file, after the other routes.
@@ -221,4 +258,4 @@ function onHttpStart() {
 
 // Listen on port 8080. The default port for http is 80, https is 443. We use 8080 here
 // because sometimes port 80 is in use by other applications on the machine
-app.listen(HTTP_PORT, onHttpStart);
+//app.listen(HTTP_PORT, onHttpStart);

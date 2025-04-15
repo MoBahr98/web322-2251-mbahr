@@ -11,4 +11,15 @@
 
     <p class="card-text"><%= product.description %></p>
   </div>
+  
+  <div class="card-footer d-flex justify-content-center gap-2">
+    <% if (user && role === 'customer') { %>
+      <a href="/cart/add/<%= product._id %>" class="btn btn-sm">Buy</a>
+    <% } %>
+
+    <% if (typeof listFlag !== 'undefined' && listFlag) { %>
+      <a href="/inventory/edit/<%= product._id %>" class="btn btn-sm">Edit</a>
+      <a href="/inventory/remove/<%= product._id %>" class="btn btn-sm">Delete</a>
+    <% } %>
+  </div>
 </div>

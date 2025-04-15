@@ -1,4 +1,6 @@
-const products = [
+const productModel = require("../models/productModel");
+
+/*const products = [
   {
     title: "One Piece Gol D. Roger Figurine",
     description:
@@ -153,22 +155,14 @@ const products = [
     imageUrl: "yogurt-AhIQcZwBnrs-unsplash.jpg",
     featured: false,
   },
-];
+];*/
 
 module.exports.getAllProducts = function () {
-  return products;
+  return productModel.find({});
 };
 
 module.exports.getFeaturedProducts = function () {
-  let filtered = [];
-
-  for (let i = 0; i < products.length; i++) {
-    if (products[i].featured) {
-      filtered.push(products[i]);
-    }
-  }
-
-  return filtered;
+  return productModel.find({ featured: true });
 };
 
 module.exports.getProductsByCategory = function (products) {

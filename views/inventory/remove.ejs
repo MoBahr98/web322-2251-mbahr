@@ -1,0 +1,20 @@
+<div class="container text-center welcome-container">
+  <h2>Confirm Delete</h2>
+  <p>
+    Are you sure you want to delete "<strong><%= product.title %></strong>"?
+  </p>
+  <form method="POST" action="/inventory/remove/<%= product._id %>">
+    <button type="submit" class="btn mt-3 ms-2" style="background-color: red">
+      Yes, Delete
+    </button>
+    <a href="/inventory/list" class="btn mt-3 ms-2">Cancel</a>
+  </form>
+
+  <div class="inventory">
+    <div class="row justify-content-center">
+      <div class="col-6">
+        <%- include("../partials/product", { product }) %>
+      </div>
+    </div>
+  </div>
+</div>

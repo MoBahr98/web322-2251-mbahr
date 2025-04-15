@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="login-container">
+    <h2>Welcome Back</h2>
+    <form method="POST" action="/log-in">
+      <label for="email" class="form-label">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="form-control"
+        value="<%= values.email %>"
+      />
+      <% if (messages.email) { %>
+      <p class="text-danger"><%= messages.email %></p>
+      <% } %>
+      <label for="password" class="form-label">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="form-control"
+        value="<%= values.password %>"
+      />
+      <% if (messages.password) { %>
+      <p class="text-danger"><%= messages.password %></p>
+      <% } %>
+
+      <label class="form-label">Login as:</label>
+      <div class="d-flex justify-content-center align-items-center">
+        <div class="form-check form-check-inline">
+          <input type="radio" id="dataEntry" name="role" value="dataEntryClerk"
+          class="form-check-input" <%= values.role === 'customer' ? '' :
+          'checked' %> />
+          <label for="dataEntry" class="form-check-label"
+            >Data Entry Clerk</label
+          >
+        </div>
+
+        <div class="form-check form-check-inline">
+          <input type="radio" id="customer" name="role" value="customer"
+          class="form-check-input" <%= values.role === 'customer' ? 'checked' :
+          '' %> />
+          <label for="customer" class="form-check-label">Customer</label>
+        </div>
+      </div>
+
+      <% if (messages.general) { %>
+      <p class="text-danger"><%= messages.general %></p>
+      <% } %>
+
+      <button type="submit" class="btn">Login</button>
+    </form>
+  </div>
+</div>

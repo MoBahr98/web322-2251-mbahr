@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="registration-container">
+    <h2>Create an Account</h2>
+    <form method="post" action="/sign-up">
+      <label for="firstName" class="form-label">First Name</label>
+      <input
+        type="text"
+        id="firstName"
+        name="firstName"
+        class="form-control"
+        value="<%= values.firstName %>"
+      />
+      <% if (messages.firstName) { %>
+      <p class="text-danger"><%= messages.firstName %></p>
+      <% } %>
+
+      <label for="lastName" class="form-label">Last Name</label>
+      <input
+        type="text"
+        id="lastName"
+        name="lastName"
+        class="form-control"
+        value="<%= values.lastName %>"
+      />
+      <% if (messages.lastName) { %>
+      <p class="text-danger"><%= messages.lastName %></p>
+      <% } %>
+
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="text"
+        id="email"
+        name="email"
+        class="form-control"
+        value="<%= values.email %>"
+      />
+      <% if (messages.email) { %>
+      <p class="text-danger"><%= messages.email %></p>
+      <% } %>
+
+      <label for="password" class="form-label" value="<%= values.password %>"
+        >Password</label
+      >
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="form-control"
+      />
+      <% if (messages.password) { %>
+      <p class="text-danger"><%= messages.password %></p>
+      <% } %>
+
+      <button type="submit" class="btn">Register</button>
+    </form>
+  </div>
+</div>
