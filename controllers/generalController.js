@@ -261,11 +261,10 @@ router.get("/cart", (req, res) => {
   } else {
     res.render("general/cart", {
       title: "Shopping-Cart",
-      cart: req.session.cart || []
+      cart: req.session.cart || [],
     });
   }
 });
-
 
 router.get("/cart/add/:id", (req, res) => {
   if (!req.session.user || req.session.role !== "customer") {
@@ -277,41 +276,43 @@ router.get("/cart/add/:id", (req, res) => {
 
   const productId = req.params.id;
 
-  
-  let cart = req.session.cart = req.session.cart || [];
+  let cart = (req.session.cart = req.session.cart || []);
 
-  productModel.findOne({ _id: productId }).exec().then(product => {
-    if (!product) {
-      return res.render("general/error", {
-        title: "Not Found",
-        message: "Product not found.",
-      });
-    }
-
-    let found = false;
-
-    cart.forEach(item => {
-      if (item.product._id.toString() === productId) {
-        item.qty += 1;
-        found = true;
+  productModel
+    .findOne({ _id: productId })
+    .exec()
+    .then((product) => {
+      if (!product) {
+        return res.render("general/error", {
+          title: "Not Found",
+          message: "Product not found.",
+        });
       }
-    });
 
-    if (!found) {
-      cart.push({
-        product: product.toObject(),
-        qty: 1
+      let found = false;
+
+      cart.forEach((item) => {
+        if (item.product._id.toString() === productId) {
+          item.qty += 1;
+          found = true;
+        }
       });
-    }
 
-    cart.sort((a, b) => a.product.title.localeCompare(b.product.title));
+      if (!found) {
+        cart.push({
+          product: product.toObject(),
+          qty: 1,
+        });
+      }
 
-    res.redirect("/cart");
-  }).catch(err => {
-    console.error("DB error: " + err);
-  });
+      cart.sort((a, b) => a.product.title.localeCompare(b.product.title));
+
+      res.redirect("/cart");
+    })
+    .catch((err) => {
+      console.error("DB error: " + err);
+    });
 });
-
 
 router.post("/cart/update/:id", (req, res) => {
   if (!req.session.user || req.session.role !== "customer") {
@@ -324,13 +325,9 @@ router.post("/cart/update/:id", (req, res) => {
   const productId = req.params.id;
   const newQty = parseInt(req.body.qty);
 
-  if (!req.session.cart) {
-    req.session.cart = [];
-  }
+  let cart = req.session.cart || [];
 
-  let cart = req.session.cart;
-
-  const item = cart.find(item => item.product._id == productId);
+  const item = cart.find((item) => item.product._id == productId);
   if (item && newQty > 0) {
     item.qty = newQty;
   }
@@ -377,12 +374,15 @@ router.get("/cart/checkout", (req, res) => {
   }
 
   let subtotal = 0;
-  cart.forEach(item => {
-    const price = item.product.salePrice < item.product.price ? item.product.salePrice : item.product.price;
+  cart.forEach((item) => {
+    const price =
+      item.product.salePrice < item.product.price
+        ? item.product.salePrice
+        : item.product.price;
     subtotal += price * item.qty;
   });
 
-  const tax = subtotal * 0.10;
+  const tax = subtotal * 0.1;
   const grandTotal = subtotal + tax;
 
   // Prepare HTML message body
@@ -402,8 +402,11 @@ router.get("/cart/checkout", (req, res) => {
         <tbody>
   `;
 
-  cart.forEach(item => {
-    const price = item.product.salePrice < item.product.price ? item.product.salePrice : item.product.price;
+  cart.forEach((item) => {
+    const price =
+      item.product.salePrice < item.product.price
+        ? item.product.salePrice
+        : item.product.price;
     const total = price * item.qty;
     messageBody += `
       <tr>
