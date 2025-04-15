@@ -17,6 +17,9 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const app = express();
 app.use(express.static(path.join(__dirname, "/assets")));
+const MongoDBStore = require("connect-mongodb-session")(session);
+
+
 
 const fileUpload = require("express-fileupload");
 app.use(fileUpload());
@@ -25,7 +28,10 @@ const expressLayouts = require("express-ejs-layouts");
 
 const dotenv = require("dotenv");
 dotenv.config({ path: "./config/.env" });
-
+var store = new MongoDBStore({
+  uri: process.env.MONGODB_CONNECTION_STRING,
+  collection: 'mySessions'
+});
 app.set("view engine", "ejs");
 app.set("layout", "layouts/main");
 app.use(expressLayouts);
@@ -39,6 +45,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    store: store,
   })
 );
 

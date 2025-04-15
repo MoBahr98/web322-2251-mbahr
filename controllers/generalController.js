@@ -370,7 +370,7 @@ router.get("/cart/checkout", (req, res) => {
   }
 
   if (cart.length === 0) {
-    return res.redirect("/cart"); // Nothing to checkout
+    return res.redirect("/cart");
   }
 
   let subtotal = 0;
@@ -385,7 +385,7 @@ router.get("/cart/checkout", (req, res) => {
   const tax = subtotal * 0.1;
   const grandTotal = subtotal + tax;
 
-  // Prepare HTML message body
+  
   let messageBody = `
     <div style="font-family: Arial, sans-serif;">
       <h2>Order Confirmation - The Geek Zone</h2>
@@ -429,11 +429,10 @@ router.get("/cart/checkout", (req, res) => {
     </div>
   `;
 
-  // Send email
   sendOrderConfirmationEmail(user.firstName, user.email, messageBody)
     .then(() => {
-      req.session.cart = []; // Clear the cart but keep the session
-      res.redirect("/cart"); // Or show a success page
+      req.session.cart = []; 
+      res.redirect("/cart"); 
     })
     .catch((err) => {
       console.log("Email error:", err);
